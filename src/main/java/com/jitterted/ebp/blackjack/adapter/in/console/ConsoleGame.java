@@ -1,8 +1,11 @@
-package com.jitterted.ebp.blackjack;
+package com.jitterted.ebp.blackjack.adapter.in.console;
 
+import com.jitterted.ebp.blackjack.domain.Game;
+
+// the "Controller" for the Console Adapter
 public class ConsoleGame {
 
-    private final Game game;
+    private final Game game; // sort of an entity + service
 
     public ConsoleGame(Game game) {
         this.game = game;
