@@ -6,6 +6,7 @@ import static org.fusesource.jansi.Ansi.ansi;
 
 public class ConsoleCard {
 
+    // TRANSFORMING Domain (Card) --> Console (String)
     public static String display(Card card) {
         String[] lines = new String[7];
         lines[0] = "┌─────────┐";
