@@ -121,10 +121,7 @@ class BlackjackControllerTest {
 
     @Test
     public void standResultsInDealerDrawingCardOnTheirTurn() throws Exception {
-        Deck dealerDrawsAdditionalCard =
-                new StubDeck(Rank.TEN,   Rank.QUEEN,
-                             Rank.NINE,  Rank.FIVE,
-                                         Rank.SIX);
+        Deck dealerDrawsAdditionalCard = StubDeck.dealerDrawsAdditionalCard();
         Game game = new Game(dealerDrawsAdditionalCard);
         BlackjackController blackjackController = new BlackjackController(game);
         blackjackController.startGame();
