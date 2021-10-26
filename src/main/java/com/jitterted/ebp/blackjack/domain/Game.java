@@ -26,20 +26,12 @@ public class Game {
         this.gameMonitor = gameMonitor;
     }
 
-    public void initialDeal() {
-        dealRoundOfCards();
-        dealRoundOfCards();
-        if (playerHand.isBlackjack()) {
-            playerDone = true;
-            gameMonitor.roundCompleted(this);
-        }
-    }
-
     private void dealRoundOfCards() {
         // why: players first because this is the rule
         playerHand.drawFrom(deck);
         dealerHand.drawFrom(deck);
     }
+
 
     public GameOutcome determineOutcome() {
         // if player is NOT done -> throw exception
@@ -80,22 +72,36 @@ public class Game {
         return dealerHand;
     }
 
+    public void initialDeal() {
+        dealRoundOfCards();
+        dealRoundOfCards();
+        updatePlayerDone(playerHand.isBlackjack());
+    }
+
     public void playerHits() {
         playerHand.drawFrom(deck);
-        playerDone = playerHand.isBusted();
-        if (playerDone) {
-            gameMonitor.roundCompleted(this);
-        }
+        updatePlayerDone(playerHand.isBusted());
     }
 
     public void playerStands() {
-        playerDone = true;
         dealerTurn();
-        gameMonitor.roundCompleted(this);
+        updatePlayerDone(true);
     }
 
     public boolean isPlayerDone() {
         return playerDone;
+    }
+
+    // in reality, in a GameService:
+    // retrieve game from database by its ID
+    // game.playerStands()
+    // game.isPlayerDone() -> if true, call GameMonitor
+
+    private void updatePlayerDone(boolean playerIsDone) {
+        playerDone = playerIsDone;
+        if (playerDone) {
+            gameMonitor.roundCompleted(this);
+        }
     }
 
 }
