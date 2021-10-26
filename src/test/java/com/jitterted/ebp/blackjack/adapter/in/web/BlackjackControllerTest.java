@@ -16,9 +16,11 @@ import static org.assertj.core.api.Assertions.*;
 
 class BlackjackControllerTest {
 
+    private static final Deck CRASH_UPON_USE_DECK = null;
+
     @Test
     public void newBlackjackControllerNoCardsDealtToPlayer() throws Exception {
-        Game game = new Game();
+        Game game = new Game(CRASH_UPON_USE_DECK);
 
         BlackjackController blackjackController = new BlackjackController(game);
 
@@ -28,7 +30,7 @@ class BlackjackControllerTest {
 
     @Test
     public void startGameResultsInInitialDeal() throws Exception {
-        Game game = new Game();
+        Game game = new Game(StubDeck.playerNotDealtBlackjack());
         BlackjackController blackjackController = new BlackjackController(game);
 
         String redirectPage = blackjackController.startGame();
@@ -117,19 +119,6 @@ class BlackjackControllerTest {
                 .isEqualTo("redirect:/done");
         assertThat(game.isPlayerDone())
                 .isTrue();
-    }
-
-    @Test
-    public void standResultsInDealerDrawingCardOnTheirTurn() throws Exception {
-        Deck dealerDrawsAdditionalCard = StubDeck.dealerDrawsAdditionalCard();
-        Game game = new Game(dealerDrawsAdditionalCard);
-        BlackjackController blackjackController = new BlackjackController(game);
-        blackjackController.startGame();
-
-        blackjackController.standCommand();
-
-        assertThat(game.dealerHand().cards())
-                .hasSize(3);
     }
 
     @Test
